@@ -162,9 +162,99 @@ ggplot(diamonds) + geom_bar(mapping = aes(x = cut))
 # y - predicted value
 # ymin, ymax - pointwise confidential interval around the mean
 # se - Standard Abweichung
-
 # parameter: span - wiggliness
-############ Workflow Grundlagen ##########################
+
+#Übung5
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, y= ..prop.., group = 1)) #weiß nicht ?
+ggplot(data = diamonds) + geom_bar(mapping = aes(x = cut, fill = color, group = 1, y = ..prop..))
+?geom_bar
+
+############### Positionsanpassungen #######################
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, color = cut)) # color = Rahmenfarbe
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = cut)) # fill = Füllfarbe
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity)) # Füllfarbe Balken nach clarity unterteilt
+
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), position = "identity") # Balken überlappen (nicht sinnvoll)
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), alpha = 1/5, position = "identity") # alpha = Teil-Transparenz
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), fill = NA, position = "identity") # fill NA = Vollkommen Transparent
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill") # pos = fill Auf selbe Höhe stapeln
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = cut), position = "stack") # pos = stack Daten aufstapeln/ keine überlappung
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge") # dodge = Balken nebeneinander
+#jitter
+ggplot(mpg) + geom_point(mapping = aes(x = displ, y = hwy), position = "jitter") # jitter = Zufallsrauschen für Punkte
+#hinzufügen um überlappte Punkte sichtbar zu machen.bringt leicht ungenauere, aber dafür mehr sichtbare Information
+ggplot(mpg) + geom_jitter(mapping = aes(x = displ, y = hwy))
+
+#Übung1
+ggplot(mpg) + geom_point(mapping = aes(x = cty, y = hwy))
+#Problem: viele Punkte überlagern sich, lässt sich mit jitter lösen 
+ggplot(mpg) + geom_jitter(mapping = aes(x = cty, y = hwy))
+#Übung2
+?geom_jitter()
+ggplot(mpg) + geom_jitter(mapping = aes(x = cty, y = hwy), width = 0.2, heigth = 0.2)
+#heigth and width
+#Übung3
+?geom_count()
+ggplot(mpg) + geom_count(mapping = aes(x = cty, y = hwy, size = stat(prop)))
+ggplot(mpg) + geom_count(mapping = aes(x = cty, y = hwy), position = "identity")
+#Übung4
+?geom_boxplot()
+mpg
+ggplot(mpg) + geom_boxplot(mapping = aes(x = class, y = hwy), position = "dodge2") # standard pos Anpassung =
+
+############### Koordinatensysten ############################
+
+ggplot(mpg) + geom_boxplot(mapping = aes(x = class, y = hwy))
+ggplot(mpg) + geom_boxplot(mapping = aes(x = class, y = hwy)) + coord_flip() #Koordinaten x, y tauschen
+
+
+## maps
+?map_data
+install.packages("maps")
+wo <- map_data("world")
+ggplot(wo, aes(long, lat, group = group)) + geom_polygon(fill = "green", color= "black") +
+   coord_quickmap()
+
+### Quickmap - 
+nz <- map_data("nz")
+ggplot(nz, aes(long, lat, group = group)) + geom_polygon(fill = "white", color= "black") +
+   coord_quickmap() # korrektes Höhen/Längenverhälnis für Karte
+
+### Polarkoordinaten
+ggplot(data = diamonds) +
+   geom_bar(mapping = aes(x = cut, fill = cut), width = 1,  show.legend = FALSE) +
+ #  theme(aspect.ratio = 1) +
+   labs(x = NULL, y = NULL) +
+   coord_flip() + 
+   coord_polar()
+
+#Übung1
+
+diamonds
+ggplot(diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity), width = 1, position = "stack") +
+   coord_polar()
+#Übung2
+?labs  # labels setzen, verstecken
+#Übung3
+wo <- map_data("world")
+ggplot(wo, aes(long, lat, group = group)) + geom_polygon(fill = "green", color= "black") +
+   coord_quickmap()
+
+install.packages("mapproj")
+?coord_map
+nz <- map_data("nz")
+ggplot(nz, aes(long, lat, group = group)) + geom_polygon(fill = "green", color= "black") +
+   coord_map(projection = "sinusoidal")
+
+#Übung4
+?geom_abline
+?coord_fixed()
+
+ggplot(mpg) + geom_point(mapping = aes(x = cty, y = hwy)) +
+             geom_abline() +  # nicht ganz klar
+              coord_fixed()    # koordinatensysteme ratio ist bei allen gleich
+
+############### Workflow Grundlagen ##########################
 
 #Übung1
 #geom_line, geom_smooth
