@@ -85,6 +85,61 @@ varmiss <- filter (flights, is.na(dep_time)); varmiss # es fehlt auch ankunft un
 p <- NA ^ 0; is.na(p) # FALSE weil Wert hoch 0 immer 1 ist
 p
 
-### Zeilen mit arrange() anordnen
-arrange(flights, year, month, day)
+########################## Zeilen mit arrange() anordnen #######################
 
+arrange(flights, year, month, day) # Nach Spalten sotieren
+arrange(flights, desc(arr_delay))  # Nach Spalte absteigend sortieren
+df <- tibble(x = c(5, 2 , NA))
+arrange(df, x)         # Fehlende Werte werden immer am Ende einsortiert
+arrange(df, desc(x))
+
+#Übung 1
+?arrange
+arrange(df, desc(is.na(x))) # NA Werte an den Anfang stellen
+#Übung2
+arrange(flights, desc(arr_delay))  # Verspätungen absteigend
+arrange(flights, dep_time)  # Abflugzeit aufsteigend
+#Übung 3
+flighttime <- arrange(flights, air_time)
+select(flighttime, flight, carrier)  # Flugzeit aufsteigend
+#Übung 4
+flighttime2 <- arrange(flights, desc(air_time))
+select(flighttime2, flight, carrier) # Flugzeit absteigend
+
+############################  Spalten mit select() auswählen  #######################
+select(fligths, year, month, day) # alle gewünschten Spalten auswählen
+select(flights, year:day) # Berich an Spalten von:bis auswählen
+select(flights, -(year:day)) # alle Spalten außer von:bis auswählen
+
+# select "Hilfsfunktionen"
+select(flights, starts_with("abc")) # sucht Namen mit "abc" am Beginn
+select(flights, starts_with("xyz")) # sucht Namen mit "xyz" am Ende
+select(flights, contains("ijk")) # sucht Namen mit "ijk"
+select(flights, matches("(.)\\1")) # wählt Werte die den reguläeren Ausdruck entsprechen
+# reguläre Ausdrücke siehe Kapitel_11
+select(flights, num_range("x",1:3)) # sucht nach x1, x2, x3
+select(flights, time_hour, air_time, everything())
+
+### Variablen umbenennen mit rename()
+rename(flights, tail_num = tailnum)
+
+#Übung 1
+select(flights, dep_time, dep_delay, arr_time, arr_delay, everything())
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+
+#Übung 2
+select(flights, dep_time, dep_time) # wird nur einmal angezeigt
+#Übung 3
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+one_of(flights)  # Vektor mit Strings
+select(flights, one_of(vars))  # Vektor wird in der Suche verwendet
+
+#Übung 4
+select(flights, contains("time", ignore.case = FALSE)) # Groß/kleinschreibung beachten
+?select
+
+##############  Varialen mit mutate() hinzufügen #####################
+
+
+
+       
