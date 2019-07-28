@@ -139,7 +139,43 @@ select(flights, contains("time", ignore.case = FALSE)) # Groß/kleinschreibung b
 ?select
 
 ##############  Varialen mit mutate() hinzufügen #####################
+### mutate zum anfügen neuer Spalten am Ende des Datensatzes
+?view
+view(flights)
+flights_sml <- select(flights, year:day, ends_with("delay"), distance, air_time)
+# neuen Spalten mit Berechnen erzeugen
+mutate(flights_sml, gain = arr_delay - dep_delay, speed = distance / air_time * 60)
+# gerade erzeugte Daten in weiteren Parameter verwenden
+mutate(flights_sml, gain = arr_delay - dep_delay, hours = air_time / 60, gain_per_hour = gain / hours)
+# transmute() nur die neuen Variablen behalten und andere entfernen
+transmute(flights, gain = arr_delay - dep_delay, hours = air_time / 60, gain_per_hour = gain / hours)
 
+### nützliche Erstellungsfunktionen
+# Arithmetische Operatoren +, -, *, /, ^
+#logische Vergleiche <,<=,=>, >, ==, !=
+# Modulo Arithmetik %/% , %%
+transmute(flights, dep_time, hour = dep_time %/% 100, minute = dep_time %% 100)
+# Logarithmusfunktionen log(), log2(), log10()
+log(exp(1e0))
+log2(2)
+log10(10)
+# Offsets lead(), lag()
+x <- 1:10
+lag(x)
+lead(x)
+x - lag(x)
+# komulative und gleitende Aggregate
+cumsum(x) # laufende Summe
+cumprod(x) # laufendes Produkt
+cummin(x) # laufendes Min
+cummax(x) # laufendes Max
+cummean(x) # laufender Mittelwert
 
-
-       
+# Rankfunktionen
+y <- c(1, 2, 2, NA, 3, 4)
+min_rank(y)
+min_rank(desc(y))
+row_number(y)
+dense_rank(y)
+percent_rank(y)
+cume_dist(y)
