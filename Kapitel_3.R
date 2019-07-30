@@ -171,7 +171,7 @@ cummin(x) # laufendes Min
 cummax(x) # laufendes Max
 cummean(x) # laufender Mittelwert
 
-# Rankfunktionen
+# Ranking-Funktionen
 y <- c(1, 2, 2, NA, 3, 4)
 min_rank(y)
 min_rank(desc(y))
