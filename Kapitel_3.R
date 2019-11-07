@@ -179,3 +179,11 @@ row_number(y)
 dense_rank(y)
 percent_rank(y)
 cume_dist(y)
+
+#Übung1
+show(flights)
+transmute(flights, min_dep = dep_time %% 100 + dep_time %/% 100 * 60,
+          sched_min_dep = sched_dep_time %% 100 + dep_time %/% 100 * 60)
+
+
+
