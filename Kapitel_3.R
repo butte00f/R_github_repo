@@ -139,6 +139,8 @@ select(flights, contains("time", ignore.case = FALSE)) # Groß/kleinschreibung b
 ?select
 
 ##############  Varialen mit mutate() hinzufügen #####################
+
+=======
 ### mutate zum anfügen neuer Spalten am Ende des Datensatzes
 ?view
 view(flights)
